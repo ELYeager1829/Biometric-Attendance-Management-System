@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "PpWCCkuXmZkzH6nbKKZ+o+irTtUY17ZO92P+jvDr8zA=",
+  "Source": "BiometricClockingSystem.Api",
+  "BasePath": "_content/BiometricClockingSystem.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
