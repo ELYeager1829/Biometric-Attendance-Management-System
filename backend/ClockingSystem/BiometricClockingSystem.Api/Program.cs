@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ReactPolicy", policy =>
     {
         policy.WithOrigins(
-            "https://biometricregister.netlify.app/"
+            "https://biometricregister.netlify.app"
         )
             .AllowAnyHeader()
             .AllowAnyMethod();
