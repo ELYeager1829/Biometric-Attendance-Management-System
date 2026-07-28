@@ -44,7 +44,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "https://biometricregister.netlify.app"
-        )   .AllowAnyHeader()
+        )
+            .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
