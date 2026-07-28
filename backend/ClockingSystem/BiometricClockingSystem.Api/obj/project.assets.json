@@ -3447,24 +3447,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\El\\.nuget\\packages\\": {}
+    "C:\\Users\\224060572\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\El\\OneDrive - Tshwane University of Technology\\Documents\\Biometric-Attendance-Management-System\\backend\\ClockingSystem\\BiometricClockingSystem.Api\\BiometricClockingSystem.Api.csproj",
+      "projectUniqueName": "C:\\Users\\224060572\\Documents\\Biometric-Attendance-Management-System\\backend\\ClockingSystem\\BiometricClockingSystem.Api\\BiometricClockingSystem.Api.csproj",
       "projectName": "BiometricClockingSystem.Api",
-      "projectPath": "C:\\Users\\El\\OneDrive - Tshwane University of Technology\\Documents\\Biometric-Attendance-Management-System\\backend\\ClockingSystem\\BiometricClockingSystem.Api\\BiometricClockingSystem.Api.csproj",
-      "packagesPath": "C:\\Users\\El\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\El\\OneDrive - Tshwane University of Technology\\Documents\\Biometric-Attendance-Management-System\\backend\\ClockingSystem\\BiometricClockingSystem.Api\\obj\\",
+      "projectPath": "C:\\Users\\224060572\\Documents\\Biometric-Attendance-Management-System\\backend\\ClockingSystem\\BiometricClockingSystem.Api\\BiometricClockingSystem.Api.csproj",
+      "packagesPath": "C:\\Users\\224060572\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\224060572\\Documents\\Biometric-Attendance-Management-System\\backend\\ClockingSystem\\BiometricClockingSystem.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\El\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\224060572\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3538,7 +3540,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.423/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
