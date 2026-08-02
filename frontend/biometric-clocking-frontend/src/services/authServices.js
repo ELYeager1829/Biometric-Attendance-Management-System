@@ -1,6 +1,6 @@
 import axios from "axios";
 
-//console.log(import.meta.env.VITE_API_URL); 
+console.log("API URL =", import.meta.env.VITE_API_URL);
 
 const API = axios.create({
 
@@ -8,6 +8,17 @@ const API = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+});
+
+// Attach the logged-in user's token (if any) to every request. Harmless for
+// endpoints that don't require auth, and means anything made [Authorize]
+// later just works without touching call sites again.
+API.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
 export const login = async (loginData) => {

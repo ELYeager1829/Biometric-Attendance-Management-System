@@ -27,7 +27,7 @@ public class TestController : ControllerBase
         return Ok("Welcome Admin!");
     }
 
-    [Authorize(Roles = "Employee")]
+    [Authorize]
     [HttpGet("employee")]
     public IActionResult Employee()
     {

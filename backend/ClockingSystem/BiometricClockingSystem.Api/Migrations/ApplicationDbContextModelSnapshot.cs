@@ -22,7 +22,189 @@ namespace BiometricClockingSystem.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BiometricClocking.API.Models.User", b =>
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.AdminOverride", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AdminId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EmployeeNumber")
+                        .IsRequired()
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Successful")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("EmployeeNumber");
+
+                    b.ToTable("AdminOverrides");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.Attendance", b =>
+                {
+                    b.Property<Guid>("AttendanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ClockIn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ClockInAuthMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ClockOut")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ClockOutAuthMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EmployeeNumber")
+                        .IsRequired()
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PerformedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("AttendanceId");
+
+                    b.HasIndex("EmployeeNumber");
+
+                    b.ToTable("Attendances");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.Employee", b =>
+                {
+                    b.Property<string>("EmployeeNumber")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<float[]>("FaceDescriptor")
+                        .IsRequired()
+                        .HasColumnType("real[]");
+
+                    b.Property<byte[]>("FaceImage")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("FacialImageContentType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RegisteredByAdminUsername")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("RegisteredOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("EmployeeNumber");
+
+                    b.HasIndex("EmployeeNumber")
+                        .IsUnique();
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.OverrideRequest", b =>
+                {
+                    b.Property<int>("OverrideRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OverrideRequestId"));
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RequestedClockType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ResolvedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ResolvedByAdminUsername")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("OverrideRequestId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("OverrideRequests");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,9 +217,8 @@ namespace BiometricClockingSystem.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("EmployeeNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<byte[]>("FingerprintTemplate")
+                        .HasColumnType("bytea");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -51,7 +232,51 @@ namespace BiometricClockingSystem.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.AdminOverride", b =>
+                {
+                    b.HasOne("BiometricClockingSystem.Api.Models.User", "Admin")
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BiometricClockingSystem.Api.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.Attendance", b =>
+                {
+                    b.HasOne("BiometricClockingSystem.Api.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("BiometricClockingSystem.Api.Models.OverrideRequest", b =>
+                {
+                    b.HasOne("BiometricClockingSystem.Api.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618
         }

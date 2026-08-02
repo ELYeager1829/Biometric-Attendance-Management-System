@@ -27,15 +27,35 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidAudience = builder.Configuration["Jwt:Audience"],
 
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+
+        RoleClaimType = System.Security.Claims.ClaimTypes.Role
     };
 });
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<BiometricClockingSystem.Api.Services.IFacialRecognitionService,
+    BiometricClockingSystem.Api.Services.FacialRecognitionService>();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient();
+builder.Services.Configure<BiometricClockingSystem.Api.Services.TwilioOptions>(
+    builder.Configuration.GetSection(BiometricClockingSystem.Api.Services.TwilioOptions.SectionName));
+builder.Services.AddScoped<BiometricClockingSystem.Api.Services.IOtpService, BiometricClockingSystem.Api.Services.OtpService>();
+builder.Services.AddScoped<BiometricClockingSystem.Api.Services.IAttendanceService, BiometricClockingSystem.Api.Services.AttendanceService>();
+
+
+//face record
+builder.Services.AddScoped<IFacialRecognitionService, FacialRecognitionService>();
+//builder.Services.AddScoped<IFingerprintMatchingService, FingerprintMatchingService>();
 
 // Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+ .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 
 // CORS
 builder.Services.AddCors(options =>
@@ -43,7 +63,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ReactPolicy", policy =>
     {
         policy.WithOrigins(
-            "https://biometricregister.netlify.app"
+            "http://localhost:5173",
+            "https://biometricregister.netlify.app",
+            "http://127.0.0.1:5173"
         )
             .AllowAnyHeader()
             .AllowAnyMethod();
@@ -54,6 +76,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
     options.SwaggerDoc("v1", new()
     {
         Title = "Biometric Clocking API",

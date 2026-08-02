@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("45c4ed63-d572-4290-a8cc-9a97d9116ec2")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("BiometricClockingSystem.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a4535cc82eee2e28dc5e4acf3bd99b8398562e87")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92da2021708ddc4b0d78e3551854e9a78fcdfe66")]
 [assembly: System.Reflection.AssemblyProductAttribute("BiometricClockingSystem.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BiometricClockingSystem.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
