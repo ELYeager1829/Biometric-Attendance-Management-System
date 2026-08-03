@@ -15,7 +15,7 @@ const Field = ({ name, label, placeholder, select, defaultValue }) => (   // reu
         <option>People</option>
       </select>
     ) : (
-      <input name={name} defaultValue={defaultValue} className="mt-2 w-full rounded-lg bg-[#09192c] p-3 text-sm outline-none focus:border-sky-500" placeholder={placeholder}/>
+      <input name={name} defaultValue={defaultValue} className="mt-2 w-full rounded-lg bg-[#09192c] p-3 text-sm outline-none focus:border-sky-500" placeholder={placeholder} />
     )}
   </label>
 )
@@ -29,12 +29,15 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
   const [cameraError, setCameraError] = useState('');   // camera/face error message shown to the user
   const [cameraRetryKey, setCameraRetryKey] = useState(0);   // bumping this re-runs the camera-start effect
   const [saving, setSaving] = useState(false);   // tracks whether the save request is in flight
+  const [modelsLoaded, setModelsLoaded] = useState(false);   // tracks whether face-api.js finished loading
   const captured = Boolean(capturedPhoto);   // true once a photo has been taken
   const isEdit = mode === 'edit'
   const [firstName, ...lastNameParts] = employee?.name?.split(' ') || []
   const lastName = lastNameParts.join(' ')
 
-  useEffect(() => { loadFaceModels() }, [])   // loads the face-api.js models once when the page mounts
+  useEffect(() => {
+    loadFaceModels().then(() => setModelsLoaded(true))   // only flip to "ready" once loading actually finishes
+  }, [])  // loads the face-api.js models once when the page mounts
 
   useEffect(() => {
     let stream   // holds the camera stream so it can be stopped on cleanup
@@ -60,6 +63,10 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
   }, [cameraRetryKey])
 
   const capturePhoto = async () => {
+    if (!modelsLoaded) {
+      setCameraError('Still preparing face detection — try again in a moment.')
+      return
+    }
     if (capturedPhoto) {
       setCapturedPhoto('')   // clear the preview so it goes back to live video
       setFaceDescriptor(null)   // clear the stored descriptor — the old capture is fully discarded here
@@ -105,7 +112,7 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5160/api'
 
     try {
-        const response = await fetch(isEdit ? `${API_URL}/Employee/${employee.id}` : `${API_URL}/Employee`, {
+      const response = await fetch(isEdit ? `${API_URL}/Employee/${employee.id}` : `${API_URL}/Employee`, {
         method: isEdit ? 'PUT' : 'POST',   // PUT for edits, POST for new employees
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)   // backend expects JSON, not multipart form data
@@ -138,13 +145,13 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
           <Panel className="p-6">
             <h2 className="font-bold text-white">Personal details</h2>
             <form ref={formRef} className="mt-6 grid gap-x-4 gap-y-5 sm:grid-cols-2">
-              <Field name="firstName" label="FIRST NAME" placeholder="e.g. Samira" defaultValue={firstName}/>
-              <Field name="lastName" label="LAST NAME" placeholder="e.g. Patel" defaultValue={lastName}/>
-              <Field name="employeeId" label="EMPLOYEE ID" placeholder="e.g. EMP-1249" defaultValue={employee?.id}/>
-              <Field name="email" label="WORK EMAIL" placeholder="samira@company.com"/>
-              <Field name="phone" label="PHONE NUMBER" placeholder="+27 00 000 0000"/>
-              <Field name="department" label="DEPARTMENT" select defaultValue={employee?.dept}/>
-              <Field name="role" label="ROLE" placeholder="e.g. Product Designer"/>
+              <Field name="firstName" label="FIRST NAME" placeholder="e.g. Samira" defaultValue={firstName} />
+              <Field name="lastName" label="LAST NAME" placeholder="e.g. Patel" defaultValue={lastName} />
+              <Field name="employeeId" label="EMPLOYEE ID" placeholder="e.g. EMP-1249" defaultValue={employee?.id} />
+              <Field name="email" label="WORK EMAIL" placeholder="samira@company.com" />
+              <Field name="phone" label="PHONE NUMBER" placeholder="+27 00 000 0000" />
+              <Field name="department" label="DEPARTMENT" select defaultValue={employee?.dept} />
+              <Field name="role" label="ROLE" placeholder="e.g. Product Designer" />
             </form>
           </Panel>
 
@@ -152,11 +159,11 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
             <h2 className="font-bold text-white">Biometric enrollment</h2>
 
             <div className={`relative mt-6 flex min-h-44 flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed ${captured ? 'border-emerald-400 bg-emerald-500/5 text-emerald-300' : 'border-slate-600 bg-[#09192c] text-sky-300'}`}>
-              <video ref={videoRef} onPause={() => videoRef.current?.play().catch(() => null)} className="h-44 w-full object-cover" muted playsInline autoPlay/>
+              <video ref={videoRef} onPause={() => videoRef.current?.play().catch(() => null)} className="h-44 w-full object-cover" muted playsInline autoPlay />
               {capturedPhoto && (
-                <img src={capturedPhoto} alt="Captured employee" className="absolute inset-0 h-44 w-full object-cover"/>
+                <img src={capturedPhoto} alt="Captured employee" className="absolute inset-0 h-44 w-full object-cover" />
               )}
-              <canvas ref={canvasRef} className="hidden"/>
+              <canvas ref={canvasRef} className="hidden" />
 
               {faceDescriptor && (
                 <span className="absolute right-2 top-2 rounded-full bg-emerald-500 px-2 py-1 text-[9px] font-bold text-white shadow">   {/* only shows once a valid descriptor is captured */}
@@ -174,8 +181,8 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
                 </button>
               )}
             </div>
-            <button onClick={capturePhoto} className="mt-4 w-full rounded-lg  bg-[#10233a] py-3 text-xs font-bold hover:bg-slate-500">
-              {captured ? 'Re-capture photo' : 'Capture facial image'}
+            <button onClick={capturePhoto} disabled={!modelsLoaded} className="mt-4 w-full rounded-lg  bg-[#10233a] py-3 text-xs font-bold hover:bg-slate-500 disabled:opacity-40">
+              {modelsLoaded ? (captured ? 'Re-capture photo' : 'Capture facial image') : 'Loading face detection...'}
             </button>
             <p className="mt-5 text-[10px] leading-4 text-slate-400">
               Biometric data is encrypted before storage and used only for attendance verification.
