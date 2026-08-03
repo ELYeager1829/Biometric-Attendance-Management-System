@@ -182,7 +182,8 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
               )}
             </div>
             <button onClick={capturePhoto} className="mt-4 w-full rounded-lg  bg-[#10233a] py-3 text-xs font-bold hover:bg-slate-500">
-                     {captured ? 'Re-capture photo' : 'Capture facial image'}
+              {captured ? 'Re-capture photo' : 'Capture facial image'}
+            </button>
             <p className="mt-5 text-[10px] leading-4 text-slate-400">
               Biometric data is encrypted before storage and used only for attendance verification.
             </p>
