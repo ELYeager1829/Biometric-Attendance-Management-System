@@ -288,8 +288,7 @@ export default function Dashboard({ employees, pendingAdminRequest, onClearAdmin
 
           <div className="flex gap-2 px-5 pb-4">
             <div className="flex max-w-sm flex-1 items-center rounded-lg bg-[#10233a] px-3">
-              <input value={query} onChange={e => setQuery(e.target.value)} className="w-full bg-transparent px-2 py-2.5 text-xs outline-none" placeholder="Search name or employee ID..." />
-            </div>
+            <input id="dashboard-search" name="search" autoComplete="off" aria-label="Search name or employee ID" value={query} onChange={e => setQuery(e.target.value)} className="w-full bg-transparent px-2 py-2.5 text-xs outline-none" placeholder="Search name or employee ID..." />            </div>
           </div>
 
           <div className="overflow-x-auto">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { getEmployees } from "../services/employeeService";
 
 import Dashboard from "../features/dashboard/pages/Dashboard";
@@ -11,6 +11,7 @@ import { initialEmployees } from "../features/dashboard/data/employees";
 
 function AppRoutes() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [employees, setEmployees] = useState(initialEmployees);
   useEffect(() => {
@@ -133,7 +134,8 @@ function AppRoutes() {
         path="/onboard"
         element={
           <OnboardPage
-            mode="create"
+            mode={location.state?.mode || "create"}
+            employee={location.state?.employee}
             onBack={() => navigate("/dashboard")}
           />
         }

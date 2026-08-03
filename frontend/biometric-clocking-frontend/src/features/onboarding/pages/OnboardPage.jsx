@@ -102,8 +102,10 @@ export default function OnboardPage({ mode = 'create', employee, onBack }) {
 
     setSaving(true)   // show the "Saving..." state on the button
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5160/api'
+
     try {
-      const response = await fetch(isEdit ? `/api/Employee/${employee.id}` : '/api/Employee', {   // hit create or update endpoint
+        const response = await fetch(isEdit ? `${API_URL}/Employee/${employee.id}` : `${API_URL}/Employee`, {
         method: isEdit ? 'PUT' : 'POST',   // PUT for edits, POST for new employees
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)   // backend expects JSON, not multipart form data

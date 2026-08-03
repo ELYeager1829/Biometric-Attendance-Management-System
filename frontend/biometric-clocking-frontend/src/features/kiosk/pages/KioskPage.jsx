@@ -50,13 +50,15 @@ function AdminLogin({ onClose, onLogin }) {
     <Modal onClose={onClose}>
       <h2 className="text-xl font-bold text-white">Admin access</h2>
       <p className="mt-2 text-sm leading-6 text-slate-400">Sign in to manage employee records and attendance.</p>
-      <label className="mt-6 block text-[10px] font-bold">EMAIL OR USERNAME</label>
-      <input value={email} onChange={event => setEmail(event.target.value)} className="mt-2 w-full rounded-lg bg-[#09192c] px-3 py-3 text-sm outline-none" placeholder="admin@verity.co" />
-      <label className="mt-4 block text-[10px] font-bold">PASSWORD</label>
+      <label htmlFor="admin-email" className="mt-6 block text-[10px] font-bold">EMAIL OR USERNAME</label>
+      <input id="admin-email" name="email" autoComplete="username" value={email} onChange={event => setEmail(event.target.value)} className="mt-2 w-full rounded-lg bg-[#09192c] px-3 py-3 text-sm outline-none" placeholder="admin@verity.co" />
+      <label htmlFor="admin-password" className="mt-4 block text-[10px] font-bold">PASSWORD</label>
       <div className="password-container">
         <input
+         id="admin-password"
           type={showPassword ? "text" : "password"}
           name="password"
+          autoComplete="current-password"
           value={password}
           onChange={event => setPassword(event.target.value)}
           placeholder="......"
@@ -113,8 +115,8 @@ function CallAdmin({ onClose, onNotify }) {
   return (
     <Modal onClose={onClose}>
       <h2 className="text-xl font-bold text-white">Admin notified... Please wait</h2>
-      <label className="mt-6 block text-[10px] font-bold">EMPLOYEE NUMBER</label>
-      <input value={employeeNumber} onChange={e => setEmployeeNumber(e.target.value)} className="mt-2 w-full rounded-lg bg-[#09192c] px-3 py-3 text-sm outline-none" placeholder="EMP-1042" />
+     <label htmlFor="employee-number" className="mt-6 block text-[10px] font-bold">EMPLOYEE NUMBER</label>
+     <input id="employee-number" name="employeeNumber" autoComplete="off" value={employeeNumber} onChange={e => setEmployeeNumber(e.target.value)} className="mt-2 w-full rounded-lg bg-[#09192c] px-3 py-3 text-sm outline-none" placeholder="EMP-1042" />
       <div className="my-6 rounded-lg bg-[#09192c] p-4 text-sky-300">
         <b className="text-sm text-white">status must change from clocked in or out whithe user waits</b>
       </div>
