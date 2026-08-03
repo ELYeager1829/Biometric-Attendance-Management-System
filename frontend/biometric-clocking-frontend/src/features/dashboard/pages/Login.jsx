@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { login } from "../services/authServices";
-import "../styles/login.css";
+import { login } from "../../../services/authServices";
+import "../../../styles/login.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function Login() {
     try {
       const result = await login(form);
 
-      
+
 
       alert("Login successful!");
 
@@ -41,7 +41,7 @@ function Login() {
     }
   };
 
- 
+
 
   return (
     <div className="login-container">
@@ -57,6 +57,15 @@ function Login() {
             name="email"
             placeholder="Email Address"
             value={form.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
             onChange={handleChange}
             required
           />
